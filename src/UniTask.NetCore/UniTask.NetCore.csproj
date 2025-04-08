@@ -18,7 +18,7 @@
 		<Version>$(Version)</Version>
 		<RepositoryUrl>https://github.com/CarbonCommunity/Carbon.UniTask</RepositoryUrl>
 	</PropertyGroup>
-	
+
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
 		<DefineConstants>TRACE;UNITASK_NETCORE;UNITY_2017_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2022_2_OR_NEWER;UNITY_2022_3_OR_NEWER;UNITY_2022_SUPPORT;ENABLE_UNITYWEBREQUEST;UNITASK_WEBREQUEST_SUPPORT</DefineConstants>
 	</PropertyGroup>
@@ -28,6 +28,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Reference Include="..\..\carbon\Rust\windows\RustDedicated_Data\Managed\UnityEngine.*.dll" />
 		<Compile Include="..\UniTask\Assets\Plugins\UniTask\Runtime\**\*.cs" />
 		<Compile Remove="..\UniTask\Assets\Plugins\UniTask\Runtime\_InternalVisibleTo.cs" />
 		<Compile Remove="..\UniTask\Assets\Plugins\UniTask\Runtime\External\**" />
@@ -35,10 +36,5 @@
 
 	<ItemGroup>
 		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="C:\Users\olegs\Desktop\C#\Carbon\Carbon\Rust\windows\RustDedicated_Data\Managed\UnityEngine.CoreModule.dll" Private="false" />
-		<Reference Include="C:\Users\olegs\Desktop\C#\Carbon\Carbon\Rust\windows\RustDedicated_Data\Managed\UnityEngine.UnityWebRequestModule" Private="false" />
 	</ItemGroup>
 </Project>
