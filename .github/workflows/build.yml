@@ -49,8 +49,7 @@ jobs:
           export VERSION=${{ steps.step1.outputs.version }}
           cd carbon
           dotnet run --project Carbon.Core/Carbon.Tools/Carbon.Runner ../build/build.cs Release
-          dotnet run --project Carbon.Core/Carbon.Tools/Carbon.Runner ../build/build.cs Release
-          dotnet run --project Carbon.Core/Carbon.Tools/Carbon.Runner ../build/nuget.cs ${{ secrets.NUGET_API }}
+          dotnet run --project Carbon.Core/Carbon.Tools/Carbon.Runner ../build/nuget.cs ${{ secrets.NUGET_API }} Release
 
       - name: Artifacts
         uses: actions/upload-artifact@v4
@@ -90,9 +89,9 @@ jobs:
         uses: softprops/action-gh-release@a92196038060e0c673cf3ba5b98710dd716731df
         with:
           draft: false
-          prerelease: true
+          prerelease: false
           tag_name: ${{ needs.build.outputs.version }}
-          name: "Build — v${{ needs.build.outputs.version }}"
+          name: "Carbon.UniTask — v${{ needs.build.outputs.version }}"
           body: |
             wip
           files: |
