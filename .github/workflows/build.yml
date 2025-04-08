@@ -56,7 +56,7 @@ jobs:
         with:
           name: build
           path: |
-            src/UniTask.NetCore/bin/Release/Carbon.UniTask.zip
+            src/UniTask.NetCore/bin/Release/netstandard2.1/Carbon.UniTask.dll
 
   release-on-commit:
     name: Release
@@ -95,4 +95,4 @@ jobs:
           body: |
             wip
           files: |
-            Release/build/Carbon.UniTask.zip     
+            Release/build/Carbon.UniTask.dll
