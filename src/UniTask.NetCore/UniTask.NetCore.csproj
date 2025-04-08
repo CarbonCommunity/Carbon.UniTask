@@ -19,7 +19,10 @@
 		<RepositoryUrl>https://github.com/CarbonCommunity/Carbon.UniTask</RepositoryUrl>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>Carbon.UniTask</PackageId>
-		<PackageLicenseUrl>https://github.com/CarbonCommunity/Carbon.UniTask/blob/master/LICENSE</PackageLicenseUrl>
+		<License>https://github.com/CarbonCommunity/Carbon.UniTask/blob/master/LICENSE</License>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageIcon>ICON.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -40,5 +43,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\LICENSE" Pack="true" PackagePath="" Visible="false"/>
+		<None Include="..\..\README.md" Pack="true" PackagePath="" Visible="false"/>
+		<None Include="ICON.png" Pack="true" PackagePath="" Visible="false"/>
 	</ItemGroup>
 </Project>
