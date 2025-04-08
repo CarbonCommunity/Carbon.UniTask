@@ -19,7 +19,7 @@
 		<RepositoryUrl>https://github.com/CarbonCommunity/Carbon.UniTask</RepositoryUrl>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>Carbon.UniTask</PackageId>
-		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageLicenseUrl>https://github.com/CarbonCommunity/Carbon.UniTask/blob/master/LICENSE</PackageLicenseUrl>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
