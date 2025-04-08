@@ -30,7 +30,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Reference Include="..\..\carbon\Rust\windows\RustDedicated_Data\Managed\UnityEngine.*.dll" />
+		<Reference Include="..\..\carbon\Rust\windows\RustDedicated_Data\Managed\UnityEngine.CoreModule.dll" />
+		<Reference Include="..\..\carbon\Rust\windows\RustDedicated_Data\Managed\UnityEngine.UnityWebRequestModule.dll" />
 		<Compile Include="..\UniTask\Assets\Plugins\UniTask\Runtime\**\*.cs" />
 		<Compile Remove="..\UniTask\Assets\Plugins\UniTask\Runtime\_InternalVisibleTo.cs" />
 		<Compile Remove="..\UniTask\Assets\Plugins\UniTask\Runtime\External\**" />
