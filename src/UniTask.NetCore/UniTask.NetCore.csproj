@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build">
 	<PropertyGroup>
-		<AssemblyName>UniTask</AssemblyName>
+		<AssemblyName>Carbon.UniTask</AssemblyName>
 		<LangVersion>12</LangVersion>
 		<RootNamespace>Cysharp.Threading.Tasks</RootNamespace>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -17,6 +17,8 @@
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<Version>$(Version)</Version>
 		<RepositoryUrl>https://github.com/CarbonCommunity/Carbon.UniTask</RepositoryUrl>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageId>Carbon.UniTask</PackageId>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
