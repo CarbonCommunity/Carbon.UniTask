@@ -36,11 +36,19 @@ jobs:
         with:
           dotnet-version: 8.0.406
 
+      - name: Bootstrap
+        shell: bash
+        run: |
+          cd carbon
+          dotnet run --project Carbon.Core/Carbon.Tools/Carbon.Runner Tools/Build/runners/bootstrap.cs
+          dotnet run --project Carbon.Core/Carbon.Tools/Carbon.Runner Tools/Build/runners/update.cs
+          
       - name: Build
         shell: bash
         run: |
           export VERSION=${{ steps.step1.outputs.version }}
           cd carbon
+          dotnet run --project Carbon.Core/Carbon.Tools/Carbon.Runner ../build/build.cs Release
           dotnet run --project Carbon.Core/Carbon.Tools/Carbon.Runner ../build/build.cs Release
           dotnet run --project Carbon.Core/Carbon.Tools/Carbon.Runner ../build/nuget.cs ${{ secrets.NUGET_API }}
 
