@@ -91,7 +91,7 @@ jobs:
           draft: false
           prerelease: false
           tag_name: ${{ needs.build.outputs.version }}
-          name: "v${{ needs.build.outputs.version }}"
+          name: "Carbon.UniTask — v${{ needs.build.outputs.version }}"
           body: |
             wip
           files: |
