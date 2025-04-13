@@ -31,7 +31,6 @@ For advanced tips, see blog post: [Extends UnityWebRequest via async decorator p
 - [PlayerLoop](#playerloop)
 - [async void vs async UniTaskVoid](#async-void-vs-async-unitaskvoid)
 - [AsyncEnumerable and Async LINQ](#asyncenumerable-and-async-linq)
-- [Awaitable Events](#awaitable-events)
 - [Channel](#channel)
 - [vs Awaitable](#vs-awaitable)
 - [ThreadPool limitation](#threadpool-limitation)
@@ -50,7 +49,7 @@ Carbon Server Integration (Plugins / Harmony / Extension)
 
 UniTask can also be integrated into Rust server environments using Carbon plugins, Harmony mods, or custom extensions. This integration allows you to use UniTask's efficient async/await operations on the server. **Simply call the `UniTaskInjector.Inject(...)` method exactly once during server startup**, and it will set up the Unity PlayerLoop for your Rust server running in headless mode.
 
-> **Warning:**  
+> [!WARNING]  
 > To use `Carbon.UniTask.dll`, you must have a clear understanding of how the Unity PlayerLoop works and possess experience in asynchronous programming. Misuse or misunderstanding of these concepts may lead to unexpected behaviors.
 
 
