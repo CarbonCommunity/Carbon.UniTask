@@ -15,15 +15,13 @@
 		<Company>Cysharp</Company>
 		<TargetFrameworks>net48;netstandard2.1</TargetFrameworks>
 		<IsPackable>false</IsPackable>
-		<PackageId />
-		<PackageProjectUrl />
 	</PropertyGroup>
 
-	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' or '$(Configuration)' == 'ReleaseUnix' or '$(Configuration)' == 'Minimal' or '$(Configuration)' == 'MinimalUnix' ">
 		<DefineConstants>TRACE;UNITASK_NETCORE;UNITY_2017_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2022_2_OR_NEWER;UNITY_2022_3_OR_NEWER;UNITY_2022_SUPPORT;ENABLE_UNITYWEBREQUEST;UNITASK_WEBREQUEST_SUPPORT</DefineConstants>
 	</PropertyGroup>
 
-	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' or '$(Configuration)' == 'DebugUnix' ">
 		<DefineConstants>TRACE;UNITASK_NETCORE;UNITY_2017_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2022_2_OR_NEWER;UNITY_2022_3_OR_NEWER;UNITY_2022_SUPPORT;ENABLE_UNITYWEBREQUEST;UNITASK_WEBREQUEST_SUPPORT</DefineConstants>
 	</PropertyGroup>
 
