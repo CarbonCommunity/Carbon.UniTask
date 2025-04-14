@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build">
 	<Import Project="$(SolutionDir)\.msbuild\Common.props" />
 	<Import Project="$(SolutionDir)\.msbuild\ReferencesRust.props" />
-	
+
 	<PropertyGroup>
 		<AssemblyName>Carbon.UniTask</AssemblyName>
 		<LangVersion>12</LangVersion>
@@ -11,16 +11,12 @@
 
 		<Id>Carbon.UniTask</Id>
 		<PackageVersion>$(Version)</PackageVersion>
-		<Authors>Cysharp, DezLife, Carbon</Authors>
 		<owners>Carbon</owners>
 		<Company>Cysharp</Company>
-		<Copyright>© Cysharp, Inc.</Copyright>
-		<PackageTags>task;async</PackageTags>
-		<Description>UniTask – an efficient async/await integration solution for Unity and .NET Core, now provided under the Carbon framework.</Description>
-		<TargetFramework>netstandard2.1</TargetFramework>
-		<Version>$(Version)</Version>
-		<RepositoryUrl>https://github.com/CarbonCommunity/Carbon.UniTask</RepositoryUrl>
+		<TargetFrameworks>net48;netstandard2.1</TargetFrameworks>
 		<IsPackable>false</IsPackable>
+		<PackageId />
+		<PackageProjectUrl />
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">

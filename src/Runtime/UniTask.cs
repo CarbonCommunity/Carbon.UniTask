@@ -82,7 +82,7 @@ namespace Cysharp.Threading.Tasks
                 return default;
             }
 
-#if (UNITASK_NETCORE && NETSTANDARD2_0)
+#if (UNITASK_NETCORE && NETSTANDARD2_0) || NET48
             return self.AsValueTask();
 #else
             return new System.Threading.Tasks.ValueTask(self.source, self.token);
@@ -453,7 +453,7 @@ namespace Cysharp.Threading.Tasks
                 return new System.Threading.Tasks.ValueTask<T>(self.result);
             }
 
-#if (UNITASK_NETCORE && NETSTANDARD2_0)
+#if (UNITASK_NETCORE && NETSTANDARD2_0) || NET48
             return self.AsValueTask();
 #else
             return new System.Threading.Tasks.ValueTask<T>(self.source, self.token);
