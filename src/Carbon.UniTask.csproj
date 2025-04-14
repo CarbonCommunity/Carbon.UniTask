@@ -1,4 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build">
+	<Import Project="$(SolutionDir)\.msbuild\Common.props" />
+	<Import Project="$(SolutionDir)\.msbuild\ReferencesRust.props" />
+	
 	<PropertyGroup>
 		<AssemblyName>Carbon.UniTask</AssemblyName>
 		<LangVersion>12</LangVersion>
@@ -17,12 +20,7 @@
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<Version>$(Version)</Version>
 		<RepositoryUrl>https://github.com/CarbonCommunity/Carbon.UniTask</RepositoryUrl>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<PackageId>Carbon.UniTask</PackageId>
-		<License>https://github.com/CarbonCommunity/Carbon.UniTask/blob/master/LICENSE</License>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageIcon>ICON.png</PackageIcon>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -34,9 +32,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Reference Include="..\..\carbon\Rust\windows\RustDedicated_Data\Managed\UnityEngine.CoreModule.dll" />
-		<Reference Include="..\..\carbon\Rust\windows\RustDedicated_Data\Managed\UnityEngine.UnityWebRequestModule.dll" />
-		<Compile Include="..\UniTask\Assets\Plugins\UniTask\Runtime\**\*.cs" />
 		<Compile Remove="..\UniTask\Assets\Plugins\UniTask\Runtime\_InternalVisibleTo.cs" />
 		<Compile Remove="..\UniTask\Assets\Plugins\UniTask\Runtime\External\**" />
 	</ItemGroup>
@@ -50,4 +45,8 @@
 		<None Include="..\..\README.md" Pack="true" PackagePath="" Visible="false"/>
 		<None Include="ICON.png" Pack="true" PackagePath="" Visible="false"/>
 	</ItemGroup>
+
+	<Target Name="CustomRelease" AfterTargets="Build" DependsOnTargets="PrepareRelease">
+		<Copy SourceFiles="$(OutputPath)$(Product).dll" DestinationFolder="$(c_managed)" />
+	</Target>
 </Project>
