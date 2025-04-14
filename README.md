@@ -1,7 +1,5 @@
 UniTask
 ===
-<a href="https://github.com/CarbonCommunity/Carbon.UniTask/releases/latest"><img src="https://github.com/CarbonCommunity/Carbon.UniTask/actions/workflows/build.yml/badge.svg" /></a>
-<a href="https://www.nuget.org/packages/Carbon.UniTask"><img alt="NuGet" src="https://img.shields.io/nuget/v/Carbon.UniTask.svg" /></a>
 
 Provides an efficient allocation free async/await integration for Unity.
 
