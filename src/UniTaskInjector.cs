@@ -15,7 +15,11 @@ public class UniTaskInjector
 	/// </summary>
 	/// <param name="syncContext">The synchronization context (for example, SynchronizationContext.Current).</param>
 	/// <param name="threadId">The main thread ID (for example, Thread.CurrentThread.ManagedThreadId).</param>
-	public static void Inject(SynchronizationContext syncContext, int threadId)
+	/// <param name="injectTimings">
+	/// Defines which PlayerLoop phases will be replaced by the UniTask implementation. 
+	/// The default value is <see cref="InjectPlayerLoopTimings.Minimum"/>, which includes only the essential phases.
+	/// </param>
+	public static void Inject(SynchronizationContext syncContext, int threadId, InjectPlayerLoopTimings injectTimings = InjectPlayerLoopTimings.Minimum)
 	{
 		if (PlayerLoopHelper.IsInjectedUniTaskPlayerLoop()) return;
 		
@@ -44,6 +48,6 @@ public class UniTaskInjector
 		}
 
 		PlayerLoopSystem playerLoop = PlayerLoop.GetCurrentPlayerLoop();
-		PlayerLoopHelper.Initialize(ref playerLoop);
+		PlayerLoopHelper.Initialize(ref playerLoop, injectTimings);
 	}
 }
