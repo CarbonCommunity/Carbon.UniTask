@@ -1,4 +1,4 @@
-UniTask
+Carbon.UniTask
 ===
 
 Provides an efficient allocation free async/await integration for Unity.
@@ -13,7 +13,7 @@ Provides an efficient allocation free async/await integration for Unity.
 * Highly compatible behaviour with Task/ValueTask/IValueTaskSource
 
 For technical details, see blog post: [UniTask v2 — Zero Allocation async/await for Unity, with Asynchronous LINQ
-](https://medium.com/@neuecc/unitask-v2-zero-allocation-async-await-for-unity-with-asynchronous-linq-1aa9c96aa7dd)  
+](https://medium.com/@neuecc/unitask-v2-zero-allocation-async-await-for-unity-with-asynchronous-linq-1aa9c96aa7dd)<br>
 For advanced tips, see blog post: [Extends UnityWebRequest via async decorator pattern — Advanced Techniques of UniTask](https://medium.com/@neuecc/extends-unitywebrequest-via-async-decorator-pattern-advanced-techniques-of-unitask-ceff9c5ee846)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -21,7 +21,7 @@ For advanced tips, see blog post: [Extends UnityWebRequest via async decorator p
 ## Table of Contents
 
 
-- [Carbon Server Integration (Plugins / Harmony / Extension)](#carbon-server-integration-plugins--harmony--extension)
+- [Carbon Usage (Plugins / Harmony / Extension)](#carbon-usage-plugins--harmony--extension)
 - [Getting started](#getting-started)
 - [Basics of UniTask and AsyncOperation](#basics-of-unitask-and-asyncoperation)
 - [Cancellation and Exception handling](#cancellation-and-exception-handling)
@@ -42,94 +42,116 @@ For advanced tips, see blog post: [Extends UnityWebRequest via async decorator p
 
 ---
 
-Carbon Server Integration (Plugins / Harmony / Extension)
+Carbon Usage (Plugins / Harmony / Extension)
 ---
 
-UniTask can also be integrated into Rust server environments using Carbon plugins, Harmony mods, or custom extensions. This integration allows you to use UniTask's efficient async/await operations on the server. **Simply call the `UniTaskInjector.Inject(...)` method exactly once during server startup**, and it will set up the Unity PlayerLoop for your Rust server running in headless mode.
+UniTask can be seamlessly integrated into Rust server environments through Carbon plugins, Harmony mods, or custom extensions. **Carbon.UniTask automatically initializes itself within the Carbon framework on server startup**, so no manual injection or configuration is required. This allows you to focus on writing asynchronous code while still benefiting from efficient async/await operations with zero allocation.
 
-> [!WARNING]  
-> To use `Carbon.UniTask.dll`, you must have a clear understanding of how the Unity PlayerLoop works and possess experience in asynchronous programming. Misuse or misunderstanding of these concepts may lead to unexpected behaviors.
+> [!WARNING]
+> To use `Carbon.UniTask`, you must have a clear understanding of how the Unity PlayerLoop works and possess experience in asynchronous programming. Misuse or misunderstanding of these concepts may lead to unexpected behaviors.
 
+### Examples
 
-### How to Integrate
+Below are a couple of examples demonstrating how to use Carbon.UniTask in your plugins.
 
-1. **Place Carbon.UniTask.dll**  
-   Copy the `Carbon.UniTask.dll` file into the `carbon\managed\lib` folder of your Carbon server.
-
-2. **Load the Plugin**  
-   Use the provided Carbon plugin (or Harmony mod/extension) to initialize UniTask on the server. The plugin takes care of calling `UniTaskInjector.Inject(...)` during initialization so that all async operations work correctly in the Unity PlayerLoop.
-
-
-### Example: Carbon Plugin
-
-Below is a simple Carbon plugin example that initializes UniTask on a Rust server:
+#### Example 1: Simple Async Operation
 
 ```csharp
-using System.Threading;
 using Cysharp.Threading.Tasks;
+using Carbon.Plugins;
 
 namespace Carbon.Plugins
 {
-    [Info("TestAsyncCarbonPlugin", "YourName", "1.0.0")]
-    [Description("A lightweight example plugin demonstrating asynchronous operations using Carbon.UniTask.")]
-    public class TestAsyncCarbonPlugin : CarbonPlugin
+    [Info("SimpleAsyncPlugin", "YourName", "1.0.0")]
+    [Description("A basic example plugin showcasing asynchronous operations using Carbon.UniTask.")]
+    public class SimpleAsyncPlugin : CarbonPlugin
     {
-        private void Init()
-        {
-            // Initialize UniTask via the custom injector
-            UniTaskInjector.Inject(SynchronizationContext.Current, Thread.CurrentThread.ManagedThreadId);
-            
-            // Subscribe to unobserved exceptions for debugging purposes
-            UniTaskScheduler.UnobservedTaskException += HandleUniTaskException;
-            
-            PrintWarning("UniTask has been successfully injected. TestAsyncPlugin is ready!")
-        }
-
-        private void Unload()
-        {
-            // Unsubscribe from exception handling on plugin unload
-            UniTaskScheduler.UnobservedTaskException -= HandleUniTaskException;
-        }
-
-        private void HandleUniTaskException(System.Exception ex)
-        {
-            UnityEngine.Debug.LogError("UniTask Exception: " + ex);
-        }
-        
         // Chat command that starts an asynchronous operation.
-        [ChatCommand("testasync")]
-        private void TestAsyncCommand(BasePlayer player, string command, string[] args)
+        [ChatCommand("simpleasync")]
+        private void SimpleAsyncCommand(BasePlayer player, string command, string[] args)
         {
-            // Start the asynchronous operation; .Forget() is used as we don't await its completion.
-            TestAsyncOperation().Forget();
-            player.ChatMessage("Async operation started. Check server logs for results.");
+            // Start the asynchronous operation with .Forget() because we do not await its completion.
+            DoSimpleAsyncOperation().Forget();
+            player.ChatMessage("Simple async operation started.");
         }
-        
-        // An example asynchronous operation that waits for 5 seconds and logs the result.
-        private async UniTaskVoid TestAsyncOperation()
+
+        private async UniTaskVoid DoSimpleAsyncOperation()
         {
-            PrintError("TestAsyncOperation started.");
-            // Await a 5-second delay.
-            await UniTask.Delay(5000);
-            
-            PrintError("TestAsyncOperation completed after 5 seconds.");
+            UnityEngine.Debug.Log("Simple async operation started.");
+            // Await a 3-second delay.
+            await UniTask.Delay(3000);
+            UnityEngine.Debug.Log("Simple async operation completed.");
         }
     }
 }
 ```
 
-### Key Points
+#### Example 2: Real Web Request Plugin
 
-- **Safe Initialization:**  
-  The UniTaskInjector.Inject(...) method is designed to check if UniTask has already been injected into the Unity PlayerLoop. This means it is safe to call multiple times without causing adverse effects.
+Below is an example of a Carbon plugin that performs an asynchronous HTTP GET request to a web endpoint (e.g., "https://example.com") using UnityWebRequest and UniTask, and then logs the result.
+
+```csharp
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.Networking;
+using Carbon.Plugins;
+
+namespace Carbon.Plugins
+{
+    [Info("RealWebRequestPlugin", "YourName", "1.0.0")]
+    [Description("A realistic example plugin that performs an asynchronous web request using Carbon.UniTask.")]
+    public class RealWebRequestPlugin : CarbonPlugin
+    {
+        // Chat command that triggers the web request.
+        [ChatCommand("realreq")]
+        private void RealRequestCommand(BasePlayer player, string command, string[] args)
+        {
+            // Start the asynchronous web request operation.
+            FetchWebData("https://example.com").Forget();
+            player.ChatMessage("Web request initiated. Check logs for details.");
+        }
+
+        // Asynchronous web request method using UnityWebRequest and UniTask.
+        private async UniTaskVoid FetchWebData(string url)
+        {
+            Debug.Log("Starting web request to: " + url);
+
+            using (UnityWebRequest request = UnityWebRequest.Get(url))
+            {
+                // Await the web request's completion.
+                await request.SendWebRequest();
+
+                if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+                {
+                    Debug.LogError("Web request error: " + request.error);
+                }
+                else
+                {
+                    string responseText = request.downloadHandler.text;
+                    Debug.Log("Web request completed successfully. Response length: " + responseText.Length);
+                }
+            }
+        }
+    }
+}
+```
+This example demonstrates a realistic use case where the plugin makes an HTTP GET request to the specified URL. The plugin logs the start and completion (or error) of the web request and notifies the player via chat that the operation has been initiated.
+
+### Benefits of Carbon.UniTask
+
+- **Automatic Initialization:**<br>
+	Carbon.UniTask automatically injects itself into the Unity PlayerLoop at server startup, eliminating the need for manual initialization.
+- **Efficient Asynchronous Operations:**<br>
+    Enjoy zero-allocation async/await operations that are optimized for Unity, ensuring high performance even in resource-critical server environments.
+- **Advanced Async Programming:**<br>
+    The Carbon.UniTask library truly elevates asynchronous programming in your plugins to a new level, offering zero-allocation async/await operations without impacting server performance.
+- **Seamless Unity Integration:**<br>
+    Carbon.UniTask integrates flawlessly with Unity's asynchronous APIs (such as AsyncOperation, UnityWebRequest, and even coroutines), allowing you to write modern async code using familiar async/await syntax.
+
+> **For full details on all key features and instructions, please refer to the original description by the UniTask library author below.**
 
 
-- **Integration Options:**  
-  This integration approach works for Carbon plugins, Harmony mods, as well as other custom extensions.
-
-
-- **Advanced Async Programming:**  
-  The Carbon.UniTask.dll library truly elevates asynchronous programming in your plugins to a new level, offering zero-allocation async/await operations without impacting server performance.
 ---
 
 Getting started
@@ -156,11 +178,11 @@ async UniTask<string> DemoAsync()
     var asset3 = await Resources.LoadAsync<TextAsset>("baz").ToUniTask(Progress.Create<float>(x => Debug.Log(x)));
 
     // await frame-based operation like a coroutine
-    await UniTask.DelayFrame(100); 
+    await UniTask.DelayFrame(100);
 
     // replacement of yield return new WaitForSeconds/WaitForSecondsRealtime
     await UniTask.Delay(TimeSpan.FromSeconds(10), ignoreTimeScale: false);
-    
+
     // yield any playerloop timing(PreUpdate, Update, LateUpdate, etc...)
     await UniTask.Yield(PlayerLoopTiming.PreLateUpdate);
 
@@ -178,7 +200,7 @@ async UniTask<string> DemoAsync()
 
     // replacement of yield return new WaitForFixedUpdate(same as UniTask.Yield(PlayerLoopTiming.FixedUpdate))
     await UniTask.WaitForFixedUpdate();
-    
+
     // replacement of yield return WaitUntil
     await UniTask.WaitUntil(() => isActive == false);
 
@@ -555,7 +577,7 @@ public enum PlayerLoopTiming
 
     PostLateUpdate = 12,
     LastPostLateUpdate = 13
-    
+
 #if UNITY_2020_2_OR_NEWER
     TimeUpdate = 14,
     LastTimeUpdate = 15,
@@ -883,19 +905,19 @@ UniTask has many standard Task-like APIs. This table shows what the alternative 
 
 Use standard type.
 
-| .NET Type | UniTask Type | 
+| .NET Type | UniTask Type |
 | --- | --- |
 | `IProgress<T>` | --- |
-| `CancellationToken` | --- | 
+| `CancellationToken` | --- |
 | `CancellationTokenSource` | --- |
 
 Use UniTask type.
 
-| .NET Type | UniTask Type | 
+| .NET Type | UniTask Type |
 | --- | --- |
 | `Task`/`ValueTask` | `UniTask` |
 | `Task<T>`/`ValueTask<T>` | `UniTask<T>` |
-| `async void` | `async UniTaskVoid` | 
+| `async void` | `async UniTaskVoid` |
 | `+= async () => { }` | `UniTask.Void`, `UniTask.Action`, `UniTask.UnityAction` |
 | --- | `UniTaskCompletionSource` |
 | `TaskCompletionSource<T>` | `UniTaskCompletionSource<T>`/`AutoResetUniTaskCompletionSource<T>` |
